@@ -6,8 +6,8 @@ import streamlit as st
 
 st.title("My COVID 19 streamlit")
 
-# url = 'https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/owid-covid-data.csv'
-df = pd.read_csv('/Users/amos/downloads/book2.csv')
+url = 'https://raw.githubusercontent.com/AmosRM/streamlitapp/main/Book2.csv'
+df = pd.read_csv(url)
 df['date'] = pd.to_datetime(df['date'])
 
 countries_list = df['location'].unique()
