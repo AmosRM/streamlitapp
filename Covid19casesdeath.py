@@ -28,6 +28,9 @@ x = new_df['date']
 y = new_df['new_cases_smoothed']
 z = new_df['new_deaths_smoothed']
 
+###################################################################
+# First figure for new cases and new deaths
+
 fig, ax1 = plt.subplots(figsize=(12,9))
 
 color = 'tab:blue'
@@ -47,5 +50,17 @@ fig.legend(bbox_to_anchor=(0.3, 0.95),fontsize=18)
 ax1.grid()
 ax1.xaxis.set_tick_params(rotation=45)
 fig.tight_layout()
+
+###################################################################
+# Second figure last 30 days new cases and new deaths with 7 days average
+
+fig1 , ax3 = plt.subplots(figsize=(12,9))
+ax3_x = new_df['date'].tail(30)
+ax3_y = new_df['new_cases'].tail(30)
+ax3.set_xlabel('Date')
+ax3.set_ylabel('NEW CASES')
+ax3.plot(x,y,color=color,label='new cases')
+
+
 
 st.pyplot(fig)
