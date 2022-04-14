@@ -55,12 +55,18 @@ fig.tight_layout()
 # Second figure last 30 days new cases and new deaths with 7 days average
 
 fig1 , ax3 = plt.subplots(figsize=(12,9))
+
 ax3_x = new_df['date'].tail(30)
 ax3_y = new_df['new_cases'].tail(30)
+
 ax3.set_xlabel('Date')
 ax3.set_ylabel('NEW CASES')
-ax3.plot(x,y,color=color,label='new cases')
+ax3.bar(ax3_x,ax3_y,label='new cases')
+ax3.tick_params(axis='y', labelcolor=color)
+ax4 = ax3.twinx()
+ax4.plot(ax3_x,ax3_y.tail(30),color=color,label='new cases')
 
 
 
 st.pyplot(fig)
+st.pyplot(fig1)
