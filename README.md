@@ -1,8 +1,5 @@
 # streamlitapp
 
-Sharing my streamlit app on the cloud
-
-
-data has been manipulated from the owid covid data set
+Creating different data apps on streamlit
 
 requirements.txt auto-generated with pipreqs

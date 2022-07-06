@@ -5,7 +5,7 @@ import numpy as np
 from sympy import comp
 import streamlit as st
 import requests
-import config, iex
+import StockApp.config as config, StockApp.iex as iex
 
 IEX_TOKEN = 'pk_a76555e5564549eb8277b0960f70135e'
 

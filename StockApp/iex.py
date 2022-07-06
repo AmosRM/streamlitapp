@@ -6,6 +6,7 @@ class IEXStock:
 
     def __init__(self, token, symbol):
         self.BASE_URL = 'https://cloud.iexapis.com/stable'
+        # self.BASE_URL = 'https://sandbox.iexapis.com'
         self.token = token
         self.symbol = symbol
 
