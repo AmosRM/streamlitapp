@@ -28,12 +28,31 @@ with st.sidebar:
 
 # Get data
 
-# ff.Cache.enable_cache('Users/amos/Downloads')
-plotting.setup_mpl()
+ff.Cache.enable_cache('/Users/amos/Downloads/cache')
 
 selected_race = ff.get_session(year_choice,race_choice,session_choice)
-driver = pd.unique(selected_race['Driver'])
-driver_choice = st.selectbox("Driver's to compare", driver)
+selected_race.load()
+driver = pd.unique(selected_race.laps['Driver'])
+driver_choice = st.multiselect("Driver's to compare", driver)
 
-fastest_lap = selected_race.laps.pick_driver(driver_choice).pick_fastest()
-fastest_lap
+driver_1 = selected_race.laps.pick_driver(driver_choice[0])
+driver_2 = selected_race.laps.pick_driver(driver_choice[1])
+
+fastest1 = driver_1.pick_fastest()
+fastest2 = driver_2.pick_fastest()
+
+t1 = fastest1.get_telemetry().add_distance()
+t2 = fastest2.get_telemetry().add_distance()
+
+
+# delta_time, ref_tel, compare_tel = utils.delta_time(fastest1)
+
+# plt.rcParams['figure.figsize'] = [10,10]
+# plotting.setup_mpl()
+
+fig , ax = plt.subplots()
+ax.plot(t1['Distance'], t1['Speed'])
+ax.plot(t2['Distance'], t2['Speed'])
+# ax.set(ylabel='Speed')
+# ax.legend(loc="lower right")
+st.write(fig)
