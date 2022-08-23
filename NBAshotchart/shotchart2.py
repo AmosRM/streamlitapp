@@ -4,31 +4,36 @@ import requests
 import pandas as pd
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+import streamlit as st
+from PIL import Image
 
+# st.header('Shot Chart')
+
+player_name = st.selectbox('Choose player',('Stephen Curry', 'Luka Doncic', 'James Harden', 'LeBron James', 'Giannis Antetokounmpo'))
 
 # Load team adn player files from bttmly/nba repo
 #   (this can be done with nba_api but this will be faster)
 players = json.loads(requests.get('https://raw.githubusercontent.com/bttmly/nba/master/data/players.json').text)
 teams = json.loads(requests.get('https://raw.githubusercontent.com/bttmly/nba/master/data/teams.json').text)
 
+
 # Get teams and players ID based on name
-def get_player_id(first, last):
+def get_player_details(player_name):
     for player in players:
+        first = player_name.split()[0]
+        last = player_name.split()[1]
         if player['firstName'] == first and player['lastName'] == last:
-            return player['playerId']
-    return -1
-def get_team_id(team_name):
-    for team in teams:
-        if team['teamName'] == team_name:
-            return team['teamId']
-    return -1
+            return player['playerId'], player['teamId']
+    return player['playerId'], player['teamId']
+
+playerId = get_player_details(player_name)[0]
 
 # Create JSON request
 shot_json = shotchartdetail.ShotChartDetail(
-            team_id = get_team_id('Golden State Warriors'),
-            player_id = get_player_id('Stephen', 'Curry'),
+            team_id = get_player_details(player_name)[1],
+            player_id = get_player_details(player_name)[0],
             context_measure_simple = 'PTS',
-            season_nullable = '2015-16',
+            season_nullable = '2021-22',
             season_type_all_star = 'Regular Season')
 
 # Load into python directory
@@ -39,8 +44,8 @@ headers = relevant_data['headers']
 rows = relevant_data['rowSet']
 
 # Create pandas DataFrame
-curry_data = pd.DataFrame(rows)
-curry_data.columns = headers
+player_data = pd.DataFrame(rows)
+player_data.columns = headers
 
 # Draw court ()
 def create_court(ax, color):
@@ -88,11 +93,20 @@ ax = fig.add_axes([0, 0, 1, 1])
 ax = create_court(ax, 'black')
 
 # Plot hexbin of shots
-ax.hexbin(curry_data['LOC_X'], curry_data['LOC_Y'] + 60, gridsize=(30, 30), extent=(-300, 300, 0, 940), bins='log', cmap='Blues')
+ax.hexbin(player_data['LOC_X'], player_data['LOC_Y'] + 60, gridsize=(30, 30), extent=(-300, 300, 0, 940), bins='log', cmap='Blues')
 
 # Annotate player name and season
-ax.text(0, 1.05, 'Stephen Curry\n2015-16 Regular Season', transform=ax.transAxes, ha='left', va='baseline')
+ax.text(0, 1.05, (player_name + '\n2021-22 Regular Season'), transform=ax.transAxes, ha='left', va='baseline')
 
 # Save and show figure
-plt.savefig('ShotChart.png', dpi=300, bbox_inches='tight')
-plt.show()
+# plt.savefig('ShotChart.png', dpi=300, bbox_inches='tight')
+# plt.show()
+
+photo_url = f"https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/{playerId}.png"
+
+col1, col2 = st.columns([1,4])
+
+with col2:
+    st.pyplot(fig)
+with col1:
+    st.image(photo_url)
