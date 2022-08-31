@@ -1,4 +1,5 @@
 from nba_api.stats.endpoints import shotchartdetail
+from nba_api.stats.endpoints import playercareerstats
 import json
 import requests
 import pandas as pd
@@ -98,15 +99,17 @@ ax.hexbin(player_data['LOC_X'], player_data['LOC_Y'] + 60, gridsize=(30, 30), ex
 # Annotate player name and season
 ax.text(0, 1.05, (player_name + '\n2021-22 Regular Season'), transform=ax.transAxes, ha='left', va='baseline')
 
-# Save and show figure
-# plt.savefig('ShotChart.png', dpi=300, bbox_inches='tight')
-# plt.show()
+playerstats = playercareerstats.PlayerCareerStats(player_id=playerId).get_data_frames()[0]
+year_stats = playerstats[playerstats['SEASON_ID'] == '2021-22']
 
 photo_url = f"https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/{playerId}.png"
 
-col1, col2 = st.columns([1,4])
+col1, col2 = st.columns([2,5])
 
 with col2:
     st.pyplot(fig)
 with col1:
     st.image(photo_url)
+    st.metric('PTS', year_stats['PTS']/year_stats['GP'].round(2))
+    st.metric('AST', year_stats['AST']/year_stats['GP'].round(2))
+    st.metric('REB', year_stats['REB']/year_stats['GP'].round(2))
