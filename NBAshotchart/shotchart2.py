@@ -10,7 +10,7 @@ from PIL import Image
 
 # st.header('Shot Chart')
 
-player_name = st.selectbox('Choose player',('Stephen Curry', 'Luka Doncic', 'James Harden', 'LeBron James', 'Giannis Antetokounmpo'))
+player_name = st.selectbox('Choose player',('Stephen Curry', 'Luka Doncic', 'Devin Booker', 'LeBron James', 'Giannis Antetokounmpo', 'Kevin Durant', 'Trae Young', 'Jimmy Butler'))
 
 # Load team adn player files from bttmly/nba repo
 #   (this can be done with nba_api but this will be faster)
@@ -101,6 +101,11 @@ ax.text(0, 1.05, (player_name + '\n2021-22 Regular Season'), transform=ax.transA
 
 playerstats = playercareerstats.PlayerCareerStats(player_id=playerId).get_data_frames()[0]
 year_stats = playerstats[playerstats['SEASON_ID'] == '2021-22']
+sd = year_stats[['GP','PTS','AST','REB']]
+sd['PTSg'] = sd['PTS']/sd['GP']
+sd['ASTg'] = sd['AST']/sd['GP']
+sd['REBg'] = sd['REB']/sd['GP']
+sd = sd.round(1)
 
 photo_url = f"https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/{playerId}.png"
 
@@ -110,6 +115,6 @@ with col2:
     st.pyplot(fig)
 with col1:
     st.image(photo_url)
-    st.metric('PTS', year_stats['PTS']/year_stats['GP'].round(2))
-    st.metric('AST', year_stats['AST']/year_stats['GP'].round(2))
-    st.metric('REB', year_stats['REB']/year_stats['GP'].round(2))
+    st.metric('PTS', sd['PTSg'])
+    st.metric('AST', sd['ASTg'])
+    st.metric('REB', sd['REBg'])
