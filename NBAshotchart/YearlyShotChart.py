@@ -18,7 +18,10 @@ shot_chart_options = {
     'gridsize': 50,
     'legend_args': {'columnspacing': 0.1},}
 
-fig, ax = plt.subplots(figsize=(12,8), dpi=100)
+fig = plt.figure("Animation")
+ax = fig.add_subplot(111)
+ax.get_xaxis().set_visible(False)
+ax.get_yaxis().set_visible(False)
 
 def plot(choose_year):
     df = pd.read_csv(f'shots_{choose_year}.csv')
@@ -36,7 +39,7 @@ def plot(choose_year):
 anim = FuncAnimation(
     fig,
     plot,
-    frames=range(10,23,1)
+    frames=range(17,23,1)
 )
 
-anim.save('shot.gif', dpi=300, writer=PillowWriter(fps=2))
+anim.save('shot1.gif', dpi=300, writer=PillowWriter(fps=2))
