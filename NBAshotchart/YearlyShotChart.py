@@ -24,7 +24,7 @@ ax.get_xaxis().set_visible(False)
 ax.get_yaxis().set_visible(False)
 
 def plot(choose_year):
-    df = pd.read_csv(f'shots_{choose_year}.csv')
+    df = pd.read_csv(f'data/shots_{choose_year}.csv')
     year = df['GAME_DATE'].astype(str).str[:4].unique()
     years = f'{year[0]}-{year[1]}'
     title = f'NBA Leage-wide Shot Chart: {years}\nMinimum {threshold} Attempts'
