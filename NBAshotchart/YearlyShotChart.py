@@ -39,7 +39,7 @@ def plot(choose_year):
 anim = FuncAnimation(
     fig,
     plot,
-    frames=range(17,23,1)
+    frames=range(10,23,1)
 )
 
 anim.save('shot1.gif', dpi=300, writer=PillowWriter(fps=2))

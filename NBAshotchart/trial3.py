@@ -36,5 +36,5 @@ def plot(choose_year):
     ax.set_axis_off()
     return plt.show()
 
-anim = animation.FuncAnimation(fig,plot,frames=range(20,23,1))
-anim.save('ShotChart.gif', dpi=300, writer=animation.PillowWriter(fps=2))
+anim = animation.FuncAnimation(fig,plot,frames=range(10,23,1))
+anim.save('ShotChartNew.gif', dpi=300, writer=animation.PillowWriter(fps=2))
