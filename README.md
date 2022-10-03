@@ -9,9 +9,9 @@ Creating different data apps on streamlit
 
 
 ## TO DO
-# NBA shotchart move to nba repo
-# WordleTweet move to Notebooks
-# Finalize the apps
+NBA shotchart move to nba repo
+WordleTweet move to Notebooks
+Finalize the apps
 
 
 requirements.txt auto-generated with pipreqs
